@@ -27,6 +27,12 @@ const Login = () => {
     if (success) navigate("/dashboard");
   };
 
+  React.useEffect(() => {
+    if (auth.user) {
+      navigate("/");
+    }
+  });
+
   return (
     <Container component="main" maxWidth="xs">
       <Box
