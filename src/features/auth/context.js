@@ -7,6 +7,7 @@ export const AuthProvider = ({ children }) => {
   let [user, setUser] = React.useState(null);
   let [users, setUsers] = React.useState([]);
   let [signupError, setSignupError] = React.useState(null);
+  let [signinError, setSigninError] = React.useState(null);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -46,18 +47,42 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  let signin = (newUser, callback) => {
-    return () => {
-      setUser(newUser);
-      callback();
-    };
+  const signin = (inputUser) => {
+    if (!inputUser.email && !inputUser.password) {
+      setSigninError("Email and password are required.");
+      return { success: false };
+    }
+    const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
+    const matchedUser = storedUsers.find(
+      (user) =>
+        user.email === inputUser.email && user.password === inputUser.password
+    );
+
+    if (matchedUser) {
+      setUser(matchedUser);
+      localStorage.setItem("user", JSON.stringify(matchedUser));
+      return { success: true };
+    } else {
+      setSigninError("Invalid credentials!");
+      return { success: false };
+    }
   };
 
   const signout = () => {
     setUser(null);
+    setUsers(null);
     localStorage.removeItem("user");
   };
-  let value = { user, users, loading, signin, signout, signup, signupError };
+  let value = {
+    user,
+    users,
+    loading,
+    signin,
+    signout,
+    signup,
+    signupError,
+    signinError,
+  };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
