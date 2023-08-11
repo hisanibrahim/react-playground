@@ -4,6 +4,7 @@ import { CssBaseline } from "@mui/material";
 
 import Layout from "./components/Layout";
 import ErrorPage from "./pages/ErrorPage";
+import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
@@ -20,6 +21,7 @@ function App() {
           <Routes>
             <Route element={<Layout />}>
               <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route
                 path="/dashboard"

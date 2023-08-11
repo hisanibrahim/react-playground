@@ -8,15 +8,24 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import { useAuth } from "../features/auth/context";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-  const handleSubmit = (event) => {
+  const auth = useAuth();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const payload = {
+      firstName: data.get("firstName"),
+      lastName: data.get("lastName"),
       email: data.get("email"),
       password: data.get("password"),
-    });
+    };
+    const { success } = auth.signup(payload);
+    if (success) navigate("/login");
   };
 
   return (
@@ -85,9 +94,11 @@ const Register = () => {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            loading={auth.loading}
           >
             Register
           </Button>
+          <Typography>{auth.signupError}</Typography>
         </Box>
       </Box>
     </Container>

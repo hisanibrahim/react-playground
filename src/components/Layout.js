@@ -15,13 +15,12 @@ import {
 import MenuIcon from "@mui/icons-material/Adb";
 import AdbIcon from "@mui/icons-material/Adb";
 
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../features/auth/context";
 
 export default function Layout() {
   const auth = useAuth();
-  const pages = ["Dashboard"];
-  const settings = ["Logout"];
+  const navigate = useNavigate();
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -94,11 +93,21 @@ export default function Layout() {
                   display: { xs: "block", md: "none" },
                 }}
               >
-                {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{page}</Typography>
+                {auth?.user ? (
+                  <MenuItem
+                    key="Dashboard"
+                    onClick={() => navigate("/dashboard")}
+                  >
+                    <Typography textAlign="center">Dashboard</Typography>
                   </MenuItem>
-                ))}
+                ) : (
+                  <MenuItem
+                    key="Register"
+                    onClick={() => navigate("/register")}
+                  >
+                    <Typography textAlign="center">Register</Typography>
+                  </MenuItem>
+                )}
               </Menu>
             </Box>
             <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
@@ -121,17 +130,23 @@ export default function Layout() {
               LOGO
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-              {auth?.user
-                ? pages.map((page) => (
-                    <Button
-                      key={page}
-                      onClick={handleCloseNavMenu}
-                      sx={{ my: 2, color: "white", display: "block" }}
-                    >
-                      {page}
-                    </Button>
-                  ))
-                : null}
+              {auth?.user ? (
+                <Button
+                  key="Dashboard"
+                  onClick={() => navigate("/dashboard")}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  Dashboard
+                </Button>
+              ) : (
+                <Button
+                  key="Register"
+                  onClick={() => navigate("/register")}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  Register
+                </Button>
+              )}
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>
@@ -156,11 +171,9 @@ export default function Layout() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
+                <MenuItem key="Logout" onClick={() => auth.signout()}>
+                  <Typography textAlign="center">Logout</Typography>
+                </MenuItem>
               </Menu>
             </Box>
           </Toolbar>
