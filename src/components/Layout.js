@@ -94,11 +94,8 @@ export default function Layout() {
                 }}
               >
                 {auth?.user ? (
-                  <MenuItem
-                    key="Dashboard"
-                    onClick={() => navigate("/dashboard")}
-                  >
-                    <Typography textAlign="center">Dashboard</Typography>
+                  <MenuItem key="Users" onClick={() => navigate("/users")}>
+                    <Typography textAlign="center">Users</Typography>
                   </MenuItem>
                 ) : (
                   <MenuItem
@@ -131,13 +128,15 @@ export default function Layout() {
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {auth?.user ? (
-                <Button
-                  key="Dashboard"
-                  onClick={() => navigate("/dashboard")}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  Dashboard
-                </Button>
+                auth.user.role === "ADMIN" ? (
+                  <Button
+                    key="Users"
+                    onClick={() => navigate("/users")}
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
+                    Users
+                  </Button>
+                ) : null
               ) : (
                 <Button
                   key="Register"

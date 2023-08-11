@@ -9,7 +9,7 @@ const columns = [
   { field: "username", headerName: "Username", width: 250 },
 ];
 
-const Dashboard = () => {
+const Users = () => {
   const auth = useAuth();
   return (
     <Container component="main" maxWidth="m">
@@ -25,7 +25,7 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Users;
 
 // export default function App() {
 //   return (

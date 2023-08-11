@@ -6,8 +6,7 @@ export const AuthProvider = ({ children }) => {
   let [loading, setLoading] = React.useState(true);
   let [user, setUser] = React.useState(null);
   let [users, setUsers] = React.useState([]);
-  let [registerError, setRegisterError] = React.useState(null);
-  let [loginError, setLoginError] = React.useState(null);
+  let [error, setError] = React.useState(null);
   const adminUser = {
     firstName: "Super",
     lastName: "Admin",
@@ -39,6 +38,10 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
+  const resetError = (newUser) => {
+    setError("");
+  };
+
   const register = (newUser) => {
     if (
       !newUser.firstName &&
@@ -46,7 +49,7 @@ export const AuthProvider = ({ children }) => {
       !newUser.username &&
       !newUser.password
     ) {
-      setRegisterError("All fields are required.");
+      setError("All fields are required.");
       return { success: false };
     }
 
@@ -55,19 +58,19 @@ export const AuthProvider = ({ children }) => {
       (user) => user.username === newUser.username
     );
     if (existingUser) {
-      setRegisterError("User already exists!");
+      setError("User already exists!");
       return { success: false };
     } else {
       storedUsers.push({ ...newUser, role: "USER" });
       localStorage.setItem("users", JSON.stringify(storedUsers));
-      setRegisterError("");
+      setError("");
       return { success: true };
     }
   };
 
   const login = (inputUser) => {
     if (!inputUser.username && !inputUser.password) {
-      setLoginError("Username and password are required.");
+      setError("Username and password are required.");
       return { success: false };
     }
     const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
@@ -83,7 +86,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("user", JSON.stringify(matchedUser));
       return { success: true };
     } else {
-      setLoginError("Invalid credentials!");
+      setError("Invalid credentials!");
       return { success: false };
     }
   };
@@ -100,8 +103,8 @@ export const AuthProvider = ({ children }) => {
     login,
     signout,
     register,
-    registerError,
-    loginError,
+    resetError,
+    error,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

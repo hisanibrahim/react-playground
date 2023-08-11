@@ -6,7 +6,7 @@ import Layout from "./components/Layout";
 import ErrorPage from "./pages/ErrorPage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Dashboard from "./pages/Dashboard";
+import Users from "./pages/Users";
 import Home from "./pages/Home";
 import RequireAuth from "./components/RequireAuth";
 import { AuthProvider } from "./features/auth/context";
@@ -24,10 +24,10 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route
-                path="/dashboard"
+                path="/users"
                 element={
                   <RequireAuth role="ADMIN">
-                    <Dashboard />
+                    <Users />
                   </RequireAuth>
                 }
               />

@@ -28,6 +28,10 @@ const Register = () => {
     if (success) navigate("/login");
   };
 
+  React.useEffect(() => {
+    auth.resetError();
+  }, []);
+
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -98,7 +102,7 @@ const Register = () => {
           >
             Register
           </Button>
-          <Typography>{auth.registerError}</Typography>
+          <Typography>{auth.error}</Typography>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link href="login" variant="body2">

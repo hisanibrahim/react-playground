@@ -24,8 +24,12 @@ const Login = () => {
       password: data.get("password"),
     };
     const { success } = auth.login(payload);
-    if (success) navigate("/dashboard");
+    if (success) navigate("/users");
   };
+
+  React.useEffect(() => {
+    auth.resetError();
+  }, []);
 
   React.useEffect(() => {
     if (auth.user) {
@@ -78,7 +82,7 @@ const Login = () => {
           >
             Login
           </Button>
-          <Typography>{auth.loginError}</Typography>
+          <Typography>{auth.error}</Typography>
           <Grid container>
             <Grid item>
               <Link href="/register" variant="body2">
