@@ -6,7 +6,7 @@ import { useAuth } from "../features/auth/context";
 const columns = [
   { field: "firstName", headerName: "First Name", width: 150 },
   { field: "lastName", headerName: "Last Name", width: 150 },
-  { field: "email", headerName: "Email", width: 250 },
+  { field: "username", headerName: "Username", width: 250 },
 ];
 
 const Dashboard = () => {
@@ -17,7 +17,7 @@ const Dashboard = () => {
       <Typography variant="h5">Users</Typography>
       <Box m={2} />
       <DataGrid
-        getRowId={(row) => row.email}
+        getRowId={(row) => row.username}
         rows={auth.users || []}
         columns={columns}
       />

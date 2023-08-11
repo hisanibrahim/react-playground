@@ -20,10 +20,10 @@ const Login = () => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const payload = {
-      email: data.get("email"),
+      username: data.get("username"),
       password: data.get("password"),
     };
-    const { success } = auth.signin(payload);
+    const { success } = auth.login(payload);
     if (success) navigate("/dashboard");
   };
 
@@ -48,10 +48,10 @@ const Login = () => {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id="username"
+            label="Username"
+            name="username"
+            autoComplete="username"
             autoFocus
           />
           <TextField
@@ -72,7 +72,7 @@ const Login = () => {
           >
             Login
           </Button>
-          <Typography>{auth.signinError}</Typography>
+          <Typography>{auth.loginError}</Typography>
           <Grid container>
             <Grid item>
               <Link href="/register" variant="body2">

@@ -151,36 +151,13 @@ export default function Layout() {
 
             <Box sx={{ flexGrow: 0 }}>
               {auth?.user ? (
-                <>
-                  <Tooltip title="Open settings">
-                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                      <Avatar
-                        alt="Remy Sharp"
-                        src="/static/images/avatar/2.jpg"
-                      />
-                    </IconButton>
-                  </Tooltip>
-                  <Menu
-                    sx={{ mt: "45px" }}
-                    id="menu-appbar"
-                    anchorEl={anchorElUser}
-                    anchorOrigin={{
-                      vertical: "top",
-                      horizontal: "right",
-                    }}
-                    keepMounted
-                    transformOrigin={{
-                      vertical: "top",
-                      horizontal: "right",
-                    }}
-                    open={Boolean(anchorElUser)}
-                    onClose={handleCloseUserMenu}
-                  >
-                    <MenuItem key="Logout" onClick={() => auth.signout()}>
-                      <Typography textAlign="center">Logout</Typography>
-                    </MenuItem>
-                  </Menu>
-                </>
+                <Button
+                  key="Logout"
+                  onClick={() => auth.signout()}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  Logout
+                </Button>
               ) : (
                 <Button
                   key="Login"

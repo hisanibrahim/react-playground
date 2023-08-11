@@ -21,10 +21,10 @@ const Register = () => {
     const payload = {
       firstName: data.get("firstName"),
       lastName: data.get("lastName"),
-      email: data.get("email"),
+      username: data.get("username"),
       password: data.get("password"),
     };
-    const { success } = auth.signup(payload);
+    const { success } = auth.register(payload);
     if (success) navigate("/login");
   };
 
@@ -71,10 +71,10 @@ const Register = () => {
               <TextField
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="username"
+                label="Username"
+                name="username"
+                autoComplete="username"
               />
             </Grid>
             <Grid item xs={12}>
@@ -98,7 +98,7 @@ const Register = () => {
           >
             Register
           </Button>
-          <Typography>{auth.signupError}</Typography>
+          <Typography>{auth.registerError}</Typography>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link href="login" variant="body2">

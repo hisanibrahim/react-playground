@@ -6,8 +6,15 @@ export const AuthProvider = ({ children }) => {
   let [loading, setLoading] = React.useState(true);
   let [user, setUser] = React.useState(null);
   let [users, setUsers] = React.useState([]);
-  let [signupError, setSignupError] = React.useState(null);
-  let [signinError, setSigninError] = React.useState(null);
+  let [registerError, setRegisterError] = React.useState(null);
+  let [loginError, setLoginError] = React.useState(null);
+  const adminUser = {
+    firstName: "Super",
+    lastName: "Admin",
+    role: "ADMIN",
+    username: "admin",
+    password: "admin",
+  };
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -16,54 +23,67 @@ export const AuthProvider = ({ children }) => {
     }
     const storedUsers = localStorage.getItem("users");
     if (storedUsers) {
-      setUsers(JSON.parse(storedUsers));
+      const parsedStoredUsers = JSON.parse(storedUsers);
+      setUsers(parsedStoredUsers);
+      const existingAdminUser = parsedStoredUsers.find(
+        (user) => user.role === "ADMIN" && user.username === "admin"
+      );
+      if (!existingAdminUser?.username) {
+        parsedStoredUsers.push(adminUser);
+        localStorage.setItem("users", JSON.stringify(parsedStoredUsers));
+      }
+    } else {
+      const defaultUsers = [adminUser];
+      localStorage.setItem("users", JSON.stringify(defaultUsers));
     }
     setLoading(false);
   }, []);
 
-  const signup = (newUser) => {
+  const register = (newUser) => {
     if (
       !newUser.firstName &&
       !newUser.lastName &&
-      !newUser.email &&
+      !newUser.username &&
       !newUser.password
     ) {
-      setSignupError("All fields are required.");
+      setRegisterError("All fields are required.");
       return { success: false };
     }
 
     const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
     const existingUser = storedUsers.find(
-      (user) => user.email === newUser.email
+      (user) => user.username === newUser.username
     );
     if (existingUser) {
-      setSignupError("User already exists!");
+      setRegisterError("User already exists!");
       return { success: false };
     } else {
-      storedUsers.push(newUser);
+      storedUsers.push({ ...newUser, role: "USER" });
       localStorage.setItem("users", JSON.stringify(storedUsers));
-      setSignupError("");
+      setRegisterError("");
       return { success: true };
     }
   };
 
-  const signin = (inputUser) => {
-    if (!inputUser.email && !inputUser.password) {
-      setSigninError("Email and password are required.");
+  const login = (inputUser) => {
+    if (!inputUser.username && !inputUser.password) {
+      setLoginError("Username and password are required.");
       return { success: false };
     }
     const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
     const matchedUser = storedUsers.find(
       (user) =>
-        user.email === inputUser.email && user.password === inputUser.password
+        user.username === inputUser.username &&
+        user.password === inputUser.password
     );
 
     if (matchedUser) {
       setUser(matchedUser);
+      setUsers(storedUsers);
       localStorage.setItem("user", JSON.stringify(matchedUser));
       return { success: true };
     } else {
-      setSigninError("Invalid credentials!");
+      setLoginError("Invalid credentials!");
       return { success: false };
     }
   };
@@ -77,11 +97,11 @@ export const AuthProvider = ({ children }) => {
     user,
     users,
     loading,
-    signin,
+    login,
     signout,
-    signup,
-    signupError,
-    signinError,
+    register,
+    registerError,
+    loginError,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
