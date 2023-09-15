@@ -15,6 +15,22 @@ const Register = () => {
   const auth = useAuth();
   const navigate = useNavigate();
 
+  const initialState = false;
+  const reducer = (state, action) => {
+    switch (action.type) {
+      case "ON":
+        return true;
+      case "OFF":
+        return false;
+      default:
+        return state;
+    }
+  };
+
+  const [state, dispatch] = React.useReducer(reducer, initialState, () => {
+    return true;
+  });
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -30,7 +46,7 @@ const Register = () => {
 
   React.useEffect(() => {
     auth.resetError();
-  }, []);
+  }, [auth]);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -110,6 +126,13 @@ const Register = () => {
               </Link>
             </Grid>
           </Grid>
+          <Button variant="contained" onClick={() => dispatch({ type: "ON" })}>
+            ON
+          </Button>
+          <Button variant="contained" onClick={() => dispatch({ type: "OFF" })}>
+            OFF
+          </Button>
+          {JSON.stringify(state)}
         </Box>
       </Box>
     </Container>

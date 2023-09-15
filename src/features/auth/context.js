@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import React, { useEffect } from "react";
 
 export const AuthContext = React.createContext();
@@ -14,6 +15,16 @@ export const AuthProvider = ({ children }) => {
     username: "admin",
     password: "admin",
   };
+
+  function createRandomUser() {
+    return {
+      firstName: faker.person.firstName(),
+      lastName: faker.person.lastName(),
+      role: "USER",
+      username: faker.internet.userName(),
+      password: faker.internet.userName(),
+    };
+  }
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -32,7 +43,12 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem("users", JSON.stringify(parsedStoredUsers));
       }
     } else {
-      const defaultUsers = [adminUser];
+      const defaultUsers = [
+        adminUser,
+        ...faker.helpers.multiple(createRandomUser, {
+          count: 10000,
+        }),
+      ];
       localStorage.setItem("users", JSON.stringify(defaultUsers));
     }
     setLoading(false);

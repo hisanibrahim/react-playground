@@ -16,11 +16,18 @@ const Users = () => {
       <Box m={2} />
       <Typography variant="h5">Users</Typography>
       <Box m={2} />
-      <DataGrid
+      {auth.users && auth.users.length
+        ? auth.users.map((user) => {
+            return (
+              <Typography key={user.username}>{user.firstName}</Typography>
+            );
+          })
+        : null}
+      {/* <DataGrid
         getRowId={(row) => row.username}
         rows={auth.users || []}
         columns={columns}
-      />
+      /> */}
     </Container>
   );
 };
